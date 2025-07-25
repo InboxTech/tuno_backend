@@ -4,7 +4,10 @@ const Contact = require("../models/contact-model")
 const getAllUsers = async (req,res)=>{
   try {
 
-    const users = await  User.find({},{password:0})
+     const users = await User.find(
+      { deleted: false },       
+      { password: 0 }            
+    );
     if(!users || users.lenth === 0) {
      return  res.status(404).json({msg:"user not found"})
     }
@@ -36,25 +39,51 @@ try {
 // user delete ===>
 
 const deleteUserById = async (req,res)=>{
-try {
-  const id = req.params.id;
-  await User.deleteOne({_id:id})
-  return res.status(200).json({msg:"delete sucessfully"})
-  
-} catch (error) {
-  console.log(error);
-  next(error);
-  
-}
+
+  try {
+    const { id } = req.params;
+
+    const updated = await User.findByIdAndUpdate(
+      id,
+      { deleted: true },
+      { new: true }
+    );
+
+    if (!updated) {
+      return res.status(404).json({ message: "User member not found" });
+    }
+
+    res.status(200).json({ message: "User member soft deleted successfully" });
+  } catch (error) {
+      next(error);
+    res
+      .status(500)
+      .json({ message: "Failed to soft delete User member", error: error.message });
+  }
 }
 // delete multi usr ==>
-  const deleteMultipleUsers = async (req, res) => {
+const deleteMultipleUsers = async (req, res) => {
   try {
     const { userIds } = req.body;
-    await User.deleteMany({ _id: { $in: userIds } });
-    res.status(200).json({ message: "Users deleted successfully" });
+
+    if (!Array.isArray(userIds) || userIds.length === 0) {
+      return res
+        .status(400)
+        .json({ message: "No user IDs provided for deletion" });
+    }
+
+    const result = await User.updateMany(
+      { _id: { $in: userIds } },
+      { $set: { deleted: true } }
+    );
+
+    res.status(200).json({
+      message: `${result.modifiedCount} users soft deleted successfully`,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Error deleting users", error });
+    res
+      .status(500)
+      .json({ message: "Error soft deleting users", error: error.message });
   }
 };
 // singal user update ===>

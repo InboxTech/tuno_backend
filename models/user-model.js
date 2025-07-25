@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  deleted: {
+    type: Boolean,
+    default: true,
+  },
   isAdmin: {
     type: Boolean,
     default: false,
@@ -36,19 +40,19 @@ const userSchema = new mongoose.Schema({
   },
   avatar: {
     type: String,
-    default: "", 
+    default: "",
   },
-   createdAt: {
+  createdAt: {
     type: Date,
     default: Date.now,
   },
 });
 
 //  Hash the password before saving
-userSchema.pre("save", async function(next){
+userSchema.pre("save", async function (next) {
   const user = this;
 
-  if(!user.isModified("password")){
+  if (!user.isModified("password")) {
     return next();
   }
 

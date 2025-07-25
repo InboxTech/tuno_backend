@@ -58,7 +58,6 @@ const createTeamMember = async (req, res) => {
   }
 };
 
-
 const handleDeleteTeam = async (id) => {
   try {
     await axios.delete(`/team/delete/${id}`);
@@ -71,12 +70,31 @@ const handleDeleteTeam = async (id) => {
 //  Get all team members
 const getAllTeamMembers = async (req, res) => {
   try {
-    const members = await Team.find().sort({ createdAt: -1 });
-    res.status(200).json(members);
+    const members = await Team.find({ deleted: false }).sort({ createdAt: -1 });
+    res.status(200).json({ success: true, members });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Failed to fetch team members", error: error.message });
+    res.status(500).json({
+      success: false,
+      message: "Admin fetch failed",
+      error: error.message,
+    });
+  }
+};
+
+// get frontend ==>
+const getFrontendTeam = async (req, res) => {
+  try {
+    const Teams = await Team.find({
+      deleted: false,
+      status: "Active",
+    }).sort({ createdAt: -1 });
+    res.status(200).json({ success: true, Teams });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Frontend fetch failed",
+      error: error.message,
+    });
   }
 };
 
@@ -104,7 +122,7 @@ const updateTeamMember = async (req, res) => {
 
     if (req.files && req.files.image && req.files.image[0]) {
       updateData.image = `/uploads/teams/${req.files.image[0].filename}`;
-      console.log("Uploaded files:", req.files); 
+      console.log("Uploaded files:", req.files);
     }
 
     const updatedMember = await Team.findByIdAndUpdate(id, updateData, {
@@ -127,19 +145,26 @@ const deleteTeamMember = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const deleted = await Team.findByIdAndDelete(id);
-    if (!deleted) {
+    const updated = await Team.findByIdAndUpdate(
+      id,
+      { deleted: true },
+      { new: true }
+    );
+
+    if (!updated) {
       return res.status(404).json({ message: "Team member not found" });
     }
 
-    res.status(200).json({ message: "Team member deleted successfully" });
+    res.status(200).json({ message: "Team member soft deleted successfully" });
   } catch (error) {
     res
       .status(500)
-      .json({ message: "Failed to delete team member", error: error.message });
+      .json({
+        message: "Failed to soft delete team member",
+        error: error.message,
+      });
   }
 };
-
 // delete multipule ===>
 const deleteMultipleTeamMembers = async (req, res) => {
   try {
@@ -151,14 +176,19 @@ const deleteMultipleTeamMembers = async (req, res) => {
         .json({ message: "No team members selected for deletion" });
     }
 
-    await Team.deleteMany({ _id: { $in: ids } });
+    const result = await Team.updateMany(
+      { _id: { $in: ids } },
+      { $set: { deleted: true } }
+    );
 
     res
       .status(200)
-      .json({ message: "Selected team members deleted successfully" });
+      .json({
+        message: `${result.modifiedCount} team members soft deleted successfully`,
+      });
   } catch (error) {
     res.status(500).json({
-      message: "Error deleting multiple team members",
+      message: "Error soft deleting multiple team members",
       error: error.message,
     });
   }
@@ -166,6 +196,7 @@ const deleteMultipleTeamMembers = async (req, res) => {
 module.exports = {
   createTeamMember,
   getAllTeamMembers,
+  getFrontendTeam,
   getTeamMemberById,
   updateTeamMember,
   deleteTeamMember,
