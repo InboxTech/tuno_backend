@@ -38,9 +38,6 @@ const addServices = async (req, res) => {
   }
 };
 
-
-
-
 //get services for frontend which only shows the active status
 const getServices = async (req, res, next) => {
   try {
@@ -136,8 +133,6 @@ const updateServices = async (req, res) => {
   }
 };
 
-
-
 //delete services 
 const deleteServices = async (req, res) => {
      try {
@@ -151,7 +146,6 @@ const deleteServices = async (req, res) => {
         next(error)
     }
 }
-
 
 //delete selected services 
 const deleteSelectedServices = async (req, res) => {
