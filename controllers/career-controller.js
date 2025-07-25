@@ -64,7 +64,7 @@ const addJobOpenings = async (req, res) => {
 //get all job openings for admin
 const getJobOpeningsAdmin = async (req, res) => {
   try {
-    const jobOpenings = await Career.find({isDeleted: false});
+    const jobOpenings = await Career.find({isDeleted: false}).sort({ createdAt: -1 });
     res.status(200).json({message: "get openings successfully",jobOpenings});
   } catch (error) {
     console.error("Error fetching job openings:", error);
@@ -76,7 +76,7 @@ const getJobOpeningsAdmin = async (req, res) => {
 //get all job openings for frontend only shows active status
 const getJobOpenings = async (req, res) => {
   try {
-    const jobOpenings = await Career.find({ status: 'Active',isDeleted: false });
+    const jobOpenings = await Career.find({ status: 'Active',isDeleted: false }).sort({ createdAt: -1 });
     res.status(200).json({message: "get openings successfully",jobOpenings});
   } catch (error) {
     console.error("Error fetching job openings:", error);
@@ -107,7 +107,7 @@ const getRelatedJobsByCategory = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const currentJob = await Career.findById(id);
+    const currentJob = await Career.findById(id).sort({ createdAt: -1 });
     if (!currentJob) {
       return res.status(404).json({ msg: "Job not found" });
     }

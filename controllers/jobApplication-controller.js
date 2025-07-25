@@ -37,7 +37,7 @@ const addApplication = async (req, res) => {
 //get all applications
 const getAllApplications = async (req, res) => {
   try {
-    const applications = await JobApply.find({isDeleted: false});
+    const applications = await JobApply.find({isDeleted: false}).sort({ createdAt: -1 });
 
     const result = applications.map((app) => ({
       ...app._doc,

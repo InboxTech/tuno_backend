@@ -41,7 +41,7 @@ const addServices = async (req, res) => {
 //get services for frontend which only shows the active status
 const getServices = async (req, res, next) => {
   try {
-    const services = await Service.find({status: 'Active',isDeleted: false});
+    const services = await Service.find({status: 'Active',isDeleted: false}).sort({ createdAt: -1 });
 
     // Log the services to check if the data is being fetched properly
     console.log("Services from DB:", services);
@@ -64,7 +64,7 @@ const getServices = async (req, res, next) => {
 //get services for admin which shows all status
 const getServicesAdmin = async (req, res, next) => {
   try {
-    const services = await Service.find({isDeleted: false});
+    const services = await Service.find({isDeleted: false}).sort({ createdAt: -1 });
 
     // Log the services to check if the data is being fetched properly
     console.log("Services from DB:", services);
