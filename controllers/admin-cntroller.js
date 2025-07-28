@@ -21,18 +21,16 @@ const getAllUsers = async (req,res)=>{
 
 // singal user data ===>
 
-const getUserById = async (req,res)=>{
-try {
-  const id = req.params.id;
-  const data  =await User.findOne({_id:id},{password:0}).sort({ createdAt: -1 });
-  return res.status(200).json({data})
-  
-} catch (error) {
-  console.log(error);
-  next(error);
-  
-}
-}
+const getUserById = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const data = await User.findOne({ _id: id }, { password: 0 }).sort({ createdAt: -1 });
+    return res.status(200).json({ data });
+  } catch (error) {
+    next(error); // ✅ Now it's defined
+  }
+};
+
 
 
     

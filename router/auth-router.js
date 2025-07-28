@@ -13,5 +13,6 @@ router.route("/register").post( validate(signupSchema), authControllers.register
 router.route("/login").post( validate(loginSchema), authControllers.login);
 // router.route("/login").post(authControllers.login);
 router.route("/user").get(authMiddleware, authControllers.user);
+router.patch("/change-password", authMiddleware, authControllers.changePassword);
 
 module.exports = router;
