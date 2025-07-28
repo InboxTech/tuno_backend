@@ -11,6 +11,10 @@ const teamSchema = new Schema(
     linkedIn: { type: String, required: true, trim: true },
     instagram: { type: String, trim: true },
     description: { type: String, required: true, trim: true },
+    deleted: {
+      type: Boolean,
+      default: true,
+    },
     status: {
       type: String,
       enum: ["Active", "Inactive", "Pending"],

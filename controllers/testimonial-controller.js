@@ -42,17 +42,34 @@ const createTestimonial = async (req, res) => {
 
 //  Get all testimonials
 const getAllTestimonials = async (req, res) => {
-  try {
-    const testimonials = await Testimonial.find({ deleted: false }).sort({ createdAt: -1 });
 
-    res.status(200).json(testimonials);
+   try {
+      const testimonials = await Testimonial.find({ deleted: false }).sort({ createdAt: -1 });
+      res.status(200).json({ success: true, testimonials });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: "Admin fetch failed",
+        error: error.message,
+      });
+    }
+};
+// get frontend ==>
+const getFrontendTestimonial = async (req, res) => {
+  try {
+    const testimonial = await Testimonial.find({
+      deleted: false,
+      status: "Active",
+    }).sort({ createdAt: -1 });
+    res.status(200).json({ success: true, testimonial });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Failed to fetch testimonials", error: error.message });
+    res.status(500).json({
+      success: false,
+      message: "Frontend fetch failed",
+      error: error.message,
+    });
   }
 };
-
 //  Get single testimonial by ID
 const getTestimonialById = async (req, res) => {
   try {
@@ -151,4 +168,5 @@ module.exports = {
   updateTestimonial,
   deleteTestimonial,
   deleteMultipleTestimonials,
+  getFrontendTestimonial,
 };
