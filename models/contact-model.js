@@ -7,6 +7,10 @@ const contactSchema = new Schema({
   subject: { type: String, required: true },
   company: { type: String, required: true },
   message: { type: String, required: true },
+   deleted: {
+      type: Boolean,
+      default: true,
+    },
   createdAt: {
     type: Date,
     default: Date.now,

@@ -9,6 +9,7 @@ const {
   updateTeamMember,
   deleteTeamMember,
   deleteMultipleTeamMembers,
+  getFrontendTeam,
 } = require("../controllers/team-controller");
 
 const authMiddleware = require("../middlewares/auth-middleware");
@@ -16,6 +17,8 @@ const adminMiddleware = require("../middlewares/admin-middleware");
 
 //  get all team members
 router.route("/team").get(getAllTeamMembers);
+// Public/Frontend route
+router.get("/frontend/team", getFrontendTeam);
 
 //  create new team member
 router

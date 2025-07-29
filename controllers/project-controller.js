@@ -1,7 +1,7 @@
 const Project = require("../models/project-model");
 
 //  Create project
-//  Create Project (Fixed multer fields and validations)
+
 const createProject = async (req, res) => {
   try {
     console.log("req.body:", req.body);

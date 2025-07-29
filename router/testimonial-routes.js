@@ -8,6 +8,7 @@ const {
   updateTestimonial,
   deleteTestimonial,
   deleteMultipleTestimonials,
+  getFrontendTestimonial
 } = require("../controllers/testimonial-controller");
 
 const authMiddleware = require("../middlewares/auth-middleware");
@@ -15,7 +16,8 @@ const adminMiddleware = require("../middlewares/admin-middleware");
 
 //  Get all testimonials
 router.route("/testimonial").get(getAllTestimonials);
-
+// Public/Frontend route
+router.get("/frontend/testimonial", getFrontendTestimonial);
 //  Create new testimonial
 router
   .route("/testimonial/create")
