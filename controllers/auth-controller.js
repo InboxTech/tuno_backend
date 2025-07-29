@@ -76,4 +76,38 @@ const user = async (req, res) => {
 
 }
 
-module.exports = {home, register, login, user};
+/// change password
+const changePassword = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({ message: "Passwords do not match" });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Current password is incorrect" });
+    }
+
+    // ✅ Just assign the new password – no need to hash manually
+    user.password = newPassword;
+    await user.save(); // the pre-save hook will hash it properly
+
+    return res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    console.error("Password update error:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+
+module.exports = {home, register, login, user,changePassword };
