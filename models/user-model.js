@@ -5,21 +5,21 @@ const jwt = require("jsonwebtoken");
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
-    required: true, // corrected typo from 'require'
+    required: true, 
   },
   email: {
     type: String,
     required: true,
-    unique: true, // to avoid duplicate email registration
+    unique: true,
   },
   phone: {
     type: String,
     required: true,
   },
   bio: {
-  type: String,
-  default: "",
-},
+    type: String,
+    default: "",
+  },
 
   password: {
     type: String,
@@ -51,6 +51,8 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  resetPasswordToken: String,
+  resetPasswordExpires: Date,
 });
 
 //  Hash the password before saving

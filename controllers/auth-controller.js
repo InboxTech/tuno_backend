@@ -1,6 +1,9 @@
 const User = require("../models/user-model");
 const bcrypt = require("bcryptjs");
-
+const crypto = require("crypto");
+const dotenv = require("dotenv");
+const sendEmail = require("../utils/sendEmail");
+dotenv.config();
 // Home logic
 const home = async (req, res) => {
     try {
@@ -98,7 +101,7 @@ const changePassword = async (req, res) => {
       return res.status(401).json({ message: "Current password is incorrect" });
     }
 
-    // ✅ Just assign the new password – no need to hash manually
+    //  Just assign the new password – no need to hash manually
     user.password = newPassword;
     await user.save(); // the pre-save hook will hash it properly
 
@@ -109,5 +112,80 @@ const changePassword = async (req, res) => {
   }
 };
 
+// forget password
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
 
-module.exports = {home, register, login, user,changePassword };
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      console.log("❌ User not found with email:", email);
+      return res.status(404).json({ message: "No user found with this email." });
+    }
+
+    const token = crypto.randomBytes(32).toString("hex");
+    const expires = Date.now() + 3600000; // 1 hour
+
+    user.resetPasswordToken = token;
+    user.resetPasswordExpires = expires;
+    await user.save();
+
+    const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173";
+    const resetUrl = `${CLIENT_URL}/reset-password/${token}`;
+
+    console.log("🔗 Reset URL:", resetUrl);
+
+    await sendEmail({
+      to: user.email,
+      subject: "Reset Your Password",
+      html: `
+        <h2>Password Reset</h2>
+        <p>Click below to reset your password:</p>
+        <a href="${resetUrl}" target="_blank">${resetUrl}</a>
+      `,
+    });
+
+    res.status(200).json({ message: "Reset link sent successfully." });
+  } catch (error) {
+    console.error("🔥 Forgot password error:", error.message || error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+
+// reset passwored
+const resetPassword = async (req, res) => {
+  const { token } = req.params;
+  const { newPassword, confirmPassword } = req.body;
+
+  try {
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({ message: "Passwords do not match" });
+    }
+
+    const user = await User.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(400).json({ message: "Invalid or expired token" });
+    }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+
+    await user.save();
+
+    res.status(200).json({ message: "Password reset successful" });
+  } catch (error) {
+    console.error("Reset password error:", error);
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
+module.exports = {home, register, login, user,changePassword,forgotPassword,resetPassword };
