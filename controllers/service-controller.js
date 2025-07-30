@@ -108,6 +108,11 @@ const updateServices = async (req, res) => {
     const serviceId = req.params.id;
     const updateData = req.body;
 
+    if( req.files && req.files.service_image && req.files.service_image[0]){
+    updateData.service_image = `/uploads/services/${req.files.service_image[0].filename}`;
+    console.log("Uploaded files:", req.files);
+  }
+
   //  // Handle new uploaded single image
   //   if (req.file) {
   //     updateData.service_image = `/uploads/serviceimage/${req.file.filename}`;

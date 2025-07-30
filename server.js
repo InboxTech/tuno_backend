@@ -5,7 +5,8 @@ const cors = require("cors");
 const fs = require("fs"); 
 const authRoute = require("./router/auth-router");
 const contactRoute = require("./router/contact-router");
-const serviceRoute = require("./router/service-router")
+const serviceRoute = require("./router/service-router");
+const industryeRoute = require("./router/industry-router");
 const jobApplyRoute = require("./router/jobApplication-router");
 const careerRoute = require("./router/career-router");
 const blogRoute = require("./router/blog-router");
@@ -52,6 +53,7 @@ app.use("/api/subscribeData",subscribeRouter);
 //admin service router
 app.use("/api/admin", serviceRoute);
 
+app.use("/api/industry",industryeRoute);
 //job application router
 app.use("/api/jobApplication", jobApplyRoute);
 
