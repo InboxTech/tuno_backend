@@ -23,7 +23,7 @@ const errorMiddleware = require("./middlewares/error-middleware");
 const path = require("path");
 //  Enable CORS - Place this at the very top
 app.use(cors({
-  origin:["http://localhost:5173", "http://localhost:5174", "http://test.inboxtechs.com", "http://admin.inboxtechs.com"],
+  origin:["http://localhost:5173", "http://localhost:5174", "http://test.inboxtechs.com", "http://admin.inboxtechs.com", "https://test.inboxtechs.com", "https://admin.inboxtechs.com"],
   credentials: true,
 }));
 // img uploaad
