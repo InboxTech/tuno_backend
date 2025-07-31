@@ -72,7 +72,7 @@ userSchema.pre("save", async function (next) {
   }
 });
 
-// 🔑 JWT Token Generator
+//  JWT Token Generator
 userSchema.methods.generateToken = async function () {
   try {
     return jwt.sign(
@@ -89,7 +89,7 @@ userSchema.methods.generateToken = async function () {
   }
 };
 
-// 🔐 Compare hashed password
+//  Compare hashed password
 userSchema.methods.comparePassword = async function (password) {
   try {
     return bcrypt.compare(password, this.password);
@@ -97,6 +97,7 @@ userSchema.methods.comparePassword = async function (password) {
     console.error(error);
   }
 };
+
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;
