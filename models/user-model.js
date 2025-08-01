@@ -5,21 +5,21 @@ const jwt = require("jsonwebtoken");
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
-    required: true, // corrected typo from 'require'
+    required: true, 
   },
   email: {
     type: String,
     required: true,
-    unique: true, // to avoid duplicate email registration
+    unique: true,
   },
   phone: {
     type: String,
     required: true,
   },
   bio: {
-  type: String,
-  default: "",
-},
+    type: String,
+    default: "",
+  },
 
   password: {
     type: String,
@@ -51,6 +51,8 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  resetPasswordToken: String,
+  resetPasswordExpires: Date,
 });
 
 //  Hash the password before saving
@@ -70,7 +72,7 @@ userSchema.pre("save", async function (next) {
   }
 });
 
-// 🔑 JWT Token Generator
+//  JWT Token Generator
 userSchema.methods.generateToken = async function () {
   try {
     return jwt.sign(
@@ -87,7 +89,7 @@ userSchema.methods.generateToken = async function () {
   }
 };
 
-// 🔐 Compare hashed password
+//  Compare hashed password
 userSchema.methods.comparePassword = async function (password) {
   try {
     return bcrypt.compare(password, this.password);
@@ -95,6 +97,7 @@ userSchema.methods.comparePassword = async function (password) {
     console.error(error);
   }
 };
+
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;

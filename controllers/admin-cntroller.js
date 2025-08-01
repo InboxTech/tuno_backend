@@ -1,23 +1,27 @@
 const User = require("../models/user-model")
 const Contact = require("../models/contact-model")
 
-const getAllUsers = async (req,res)=>{
+const getAllUsers = async (req, res) => {
   try {
+    const { filter } = req.query; // filter = 'all' | 'deleted' | 'active'
 
-     const users = await User.find(
-      { deleted: false },       
-      { password: 0 }            
-    );
-    if(!users || users.lenth === 0) {
-     return  res.status(404).json({msg:"user not found"})
+    let query = {};
+    if (filter === 'active') query.deleted = false;
+    else if (filter === 'deleted') query.deleted = true;
+
+    const users = await User.find(query, { password: 0 });
+
+    if (!users || users.length === 0) {
+      return res.status(404).json({ msg: "user not found" });
     }
-    return res.status(200).json(users)
-    
+
+    return res.status(200).json(users); 
   } catch (error) {
-    console.log(error);
-    
+    console.error(error);
+    res.status(500).json({ msg: "Server error" });
   }
-}
+};
+
 
 // singal user data ===>
 
@@ -27,7 +31,7 @@ const getUserById = async (req, res, next) => {
     const data = await User.findOne({ _id: id }, { password: 0 }).sort({ createdAt: -1 });
     return res.status(200).json({ data });
   } catch (error) {
-    next(error); // ✅ Now it's defined
+    next(error); //  Now it's defined
   }
 };
 
