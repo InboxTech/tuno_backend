@@ -25,7 +25,7 @@ router.route("/project/create").post(
   adminMiddleware,
   uploadHandler([
     { name: "projectImage", maxCount: 1 }, 
-    { name: "projectImages", maxCount: 5 }, 
+    // { name: "projectImages", maxCount: 5 }, 
   ]),
   createProject
 );
@@ -39,7 +39,7 @@ router.route("/project/update/:id").put(
   adminMiddleware,
   uploadHandler([
     { name: "projectImage", maxCount: 1 }, 
-    { name: "projectImages", maxCount: 5 }, 
+    // { name: "projectImages", maxCount: 5 }, 
   ]),
   updateProject
 );

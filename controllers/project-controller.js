@@ -11,15 +11,15 @@ const createProject = async (req, res) => {
 
     //  Access files using multer.fields structure
     const singleImage = req.files?.["projectImage"]?.[0];
-    const multipleImages = req.files?.["projectImages"] || [];
+    // const multipleImages = req.files?.["projectImages"] || [];
 
     const projectImage = singleImage
       ? `/uploads/projects/${singleImage.filename}`
       : null;
 
-    const projectImages = multipleImages.map(
-      (file) => `/uploads/projects/${file.filename}`
-    );
+    // const projectImages = multipleImages.map(
+    //   (file) => `/uploads/projects/${file.filename}`
+    // );
 
     //  Basic validation
     if (
@@ -41,7 +41,7 @@ const createProject = async (req, res) => {
       fullDescription,
       status,
       projectImage,
-      projectImages,
+      // projectImages,
     });
 
     const savedProject = await newProject.save();
@@ -132,11 +132,11 @@ const updateProject = async (req, res) => {
     }
 
     //  For multiple images
-    if (req.files?.projectImages?.length > 0) {
-      updateData.projectImages = req.files.projectImages.map(
-        (file) => `/uploads/projects/${file.filename}`
-      );
-    }
+    // if (req.files?.projectImages?.length > 0) {
+    //   updateData.projectImages = req.files.projectImages.map(
+    //     (file) => `/uploads/projects/${file.filename}`
+    //   );
+    // }
     const updated = await Project.findOneAndUpdate(
       { _id: req.params.id, deleted: false },
       updateData,

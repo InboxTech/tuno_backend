@@ -22,10 +22,10 @@ const projectSchema = new mongoose.Schema(
       required: true,
     },
 
-    projectImages: {
-      type: [String],
-      default: [],
-    },
+    // projectImages: {
+    //   type: [String],
+    //   default: [],
+    // },
     deleted: {
       type: Boolean,
       default: false,

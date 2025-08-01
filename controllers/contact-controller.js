@@ -1,26 +1,32 @@
 const Contact = require("../models/contact-model");
-
+const nodemailer = require("nodemailer");
 // submit form 
 const contactForm = async (req, res) => {
   try {
     const contactData = req.body;
+    console.log("📥 Received contact data:", contactData); // Log input
 
+    // Basic validation
     if (
       !contactData.name ||
       !contactData.email ||
       !contactData.phone ||
       !contactData.subject ||
-      !contactData.company ||
       !contactData.message
     ) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    await Contact.create(contactData);
-    return res.status(200).json({ message: "Message sent successfully" });
+    const saved = await Contact.create(contactData);
+    console.log("✅ Contact saved:", saved); // Confirm save
+
+    return res.status(200).json({ message: "Contact saved successfully" });
   } catch (error) {
-    console.error("Error saving contact form:", error);
-    return res.status(500).json({ message: "Message not delivered" });
+    console.error("❌ Error saving contact form:", error.message);
+    return res.status(500).json({
+      message: "Message not delivered",
+      error: error.message, // <-- add this
+    });
   }
 };
 
@@ -91,4 +97,51 @@ const deleteContactById = async (req, res, next) => {
       });
     }
 };
-module.exports = { contactForm, getAllContact, deleteContactById,deleteMultipleContact };
+
+
+//send contact info to email
+const sendContactEmail = async (req, res) => {
+  const { name, email, phone, subject, company, message } = req.body;
+
+  if (!name || !email || !message) {
+    return res.status(400).json({ message: "Name, email, and message are required." });
+  }
+
+  try {
+    console.log("📨 Preparing to send email...");
+    console.log("🔐 Using email:", process.env.EMAIL_USER);
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: `"${name}" <${email}>`,
+      to:"aadil@inbox-infotech.com",
+      subject: `New Contact: ${subject || "General Inquiry"}`,
+      html: `
+        <h2>New Contact Message</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Phone:</strong> ${phone || "N/A"}</p>
+        <p><strong>Company:</strong> ${company || "N/A"}</p>
+        <p><strong>Subject:</strong> ${subject || "N/A"}</p>
+        <p><strong>Message:</strong><br>${message}</p>
+      `,
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log("✅ Email sent:", info.response); // 👈 see what happens
+
+    res.status(200).json({ message: "Your message has been sent to the admin." });
+  } catch (error) {
+    console.error("❌ Error sending email:", error.message);
+    return res.status(500).json({ message: "Failed to send message. Try again later." });
+  }
+};
+
+module.exports = { contactForm, getAllContact, deleteContactById,deleteMultipleContact, sendContactEmail};
