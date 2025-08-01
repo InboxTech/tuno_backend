@@ -140,7 +140,7 @@ const forgotPassword = async (req, res) => {
       to: user.email,
       subject: "Reset Your Password",
       html: `
-      <div style="border:1px solid #581c87; border-radius: 5px; padding-bottom:18px">
+      <div style="border:1px solid #581c87; border-radius: 5px; padding:18px">
         <h2 styele="color: #581c87;">Password Reset</h2>
          <p>Secure your account with a new password</p>
         <p>  We received a request to reset your password. If you made this request, click the button below to create a new password. This link will expire in 24 hours for security reasons.</p>
