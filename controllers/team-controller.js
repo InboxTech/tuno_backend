@@ -122,7 +122,7 @@ const updateTeamMember = async (req, res) => {
 
     if (req.files && req.files.image && req.files.image[0]) {
       updateData.image = `/uploads/teams/${req.files.image[0].filename}`;
-      console.log("Uploaded files:", req.files);
+      // console.log("Uploaded files:", req.files);
     }
 
     const updatedMember = await Team.findByIdAndUpdate(id, updateData, {
@@ -157,12 +157,10 @@ const deleteTeamMember = async (req, res) => {
 
     res.status(200).json({ message: "Team member soft deleted successfully" });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        message: "Failed to soft delete team member",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Failed to soft delete team member",
+      error: error.message,
+    });
   }
 };
 // delete multipule ===>
@@ -181,11 +179,9 @@ const deleteMultipleTeamMembers = async (req, res) => {
       { $set: { deleted: true } }
     );
 
-    res
-      .status(200)
-      .json({
-        message: `${result.modifiedCount} team members soft deleted successfully`,
-      });
+    res.status(200).json({
+      message: `${result.modifiedCount} team members soft deleted successfully`,
+    });
   } catch (error) {
     res.status(500).json({
       message: "Error soft deleting multiple team members",

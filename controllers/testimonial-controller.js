@@ -39,20 +39,20 @@ const createTestimonial = async (req, res) => {
   }
 };
 
-
 //  Get all testimonials
 const getAllTestimonials = async (req, res) => {
-
-   try {
-      const testimonials = await Testimonial.find({ deleted: false }).sort({ createdAt: -1 });
-      res.status(200).json({ success: true, testimonials });
-    } catch (error) {
-      res.status(500).json({
-        success: false,
-        message: "Admin fetch failed",
-        error: error.message,
-      });
-    }
+  try {
+    const testimonials = await Testimonial.find({ deleted: false }).sort({
+      createdAt: -1,
+    });
+    res.status(200).json({ success: true, testimonials });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Admin fetch failed",
+      error: error.message,
+    });
+  }
 };
 // get frontend ==>
 const getFrontendTestimonial = async (req, res) => {
@@ -107,7 +107,7 @@ const updateTestimonial = async (req, res) => {
 
     if (req.files && req.files.image && req.files.image[0]) {
       updatedFields.image = `/uploads/testimonials/${req.files.image[0].filename}`;
-       console.log("Uploaded files:", req.files);
+      //  console.log("Uploaded files:", req.files);
     }
 
     await Testimonial.findByIdAndUpdate(id, updatedFields);
@@ -117,12 +117,15 @@ const updateTestimonial = async (req, res) => {
   }
 };
 
-
 //  Delete testimonial by ID
 const deleteTestimonial = async (req, res) => {
   try {
     const { id } = req.params;
-    const deleted = await Testimonial.findByIdAndUpdate(id, { deleted: true }, { new: true });
+    const deleted = await Testimonial.findByIdAndUpdate(
+      id,
+      { deleted: true },
+      { new: true }
+    );
 
     if (!deleted) {
       return res.status(404).json({ message: "Testimonial not found" });
@@ -130,10 +133,11 @@ const deleteTestimonial = async (req, res) => {
 
     res.status(200).json({ message: "Testimonial deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Failed to delete testimonial", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to delete testimonial", error: error.message });
   }
 };
-
 
 //  Delete multiple testimonials
 const deleteMultipleTestimonials = async (req, res) => {
@@ -146,18 +150,19 @@ const deleteMultipleTestimonials = async (req, res) => {
         .json({ message: "No testimonials selected for deletion" });
     }
 
-    await Testimonial.updateMany({ _id: { $in: ids } }, { $set: { deleted: true } });
+    await Testimonial.updateMany(
+      { _id: { $in: ids } },
+      { $set: { deleted: true } }
+    );
 
     res
       .status(200)
       .json({ message: "Selected testimonials deleted successfully" });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        message: "Error deleting multiple testimonials",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Error deleting multiple testimonials",
+      error: error.message,
+    });
   }
 };
 

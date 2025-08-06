@@ -34,10 +34,15 @@ const jobApplySchema = new Schema({
         type: String,
         required: true
     },
-     isDeleted: {
-    type: Boolean,
-    default: false,
-  } 
+    isDeleted: {
+        type: Boolean,
+        default: false,
+    },
+    status: {
+        type: String,
+        enum: ['Pending', 'Shortlisted', 'Rejected', 'On Hold', 'Need to discuss'],
+        default: 'Pending',
+    }
   
 })
 

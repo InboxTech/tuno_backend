@@ -7,16 +7,21 @@ const contactSchema = new Schema({
   subject: { type: String, required: true },
   company: { type: String },
   message: { type: String, required: true },
-   deleted: {
-      type: Boolean,
-      default: false,
-    },
+  deleted: {
+    type: Boolean,
+    default: false,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
   },
-  
-},{ timestamps: true });
+  status: {
+    type: String,
+    enum: ['Unread', 'Read'],
+    default: 'Unread',
+  },
+
+}, { timestamps: true });
 
 // Create model
 const Contact = model("Contact", contactSchema);

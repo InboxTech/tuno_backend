@@ -50,10 +50,10 @@ const careerschema = new Schema({
         type: Date,
         default: Date.now
     },
-     isDeleted: {
-    type: Boolean,
-    default: false,
-  } 
+    isDeleted: {
+        type: Boolean,
+        default: false,
+    } 
     })
 
 const Career = new model('Career', careerschema);

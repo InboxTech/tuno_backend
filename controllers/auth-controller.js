@@ -17,7 +17,7 @@ const home = async (req, res) => {
 // Register logic
 const register = async (req, res) => {
   try {
-    console.log(req.body);
+    // console.log(req.body);
     const { username, email, phone, password } = req.body;
 
     const userExist = await User.findOne({ email });
@@ -47,7 +47,7 @@ const login = async (req, res) => {
     const { email, password } = req.body;
 
     const userExist = await User.findOne({ email });
-    console.log(userExist);
+    // console.log(userExist);
 
     if (!userExist) {
       return res.status(400).json({ message: "Invalid Credentials" });
@@ -74,7 +74,7 @@ const login = async (req, res) => {
 const user = async (req, res) => {
   try {
     const userData = req.user;
-    console.log(userData);
+    // console.log(userData);
     return res.status(200).json({ userData });
   } catch (error) {
     console.log(`router from the user route ${error}`);
@@ -140,16 +140,17 @@ const forgotPassword = async (req, res) => {
       to: user.email,
       subject: "Reset Your Password",
       html: `
-      <div style="border:1px solid #581c87; border-radius: 5px; padding:18px">
-        <h2 styele="color: #581c87;">Password Reset</h2>
-         <p>Secure your account with a new password</p>
-        <p>  We received a request to reset your password. If you made this request, click the button below to create a new password. This link will expire in 24 hours for security reasons.</p>
-        <a style="text-decoration: none;
-    background-color: #581c87;
-    color: #fff;
-    font-size: 13px;
-    padding: 5px;
-    border-radius: 5px;" href="${resetUrl}" target="_blank"> Reset My Password</a>
+        <div style="border:1px solid #581c87; border-radius: 5px; padding:18px">
+          <h2 styele="color: #581c87;">Password Reset</h2>
+          <p>Secure your account with a new password</p>
+          <p>  We received a request to reset your password. If you made this request, click the button below to create a new password. This link will expire in 24 hours for security reasons.</p>
+          <a style="text-decoration: none;
+            background-color: #581c87;
+            color: #fff;
+            font-size: 13px;
+            padding: 5px;
+            border-radius: 5px;" href="${resetUrl}" target="_blank"> Reset My Password
+          </a>
         </div>
       `,
     });
