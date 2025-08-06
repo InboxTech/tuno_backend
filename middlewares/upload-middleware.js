@@ -66,7 +66,7 @@ const upload = multer({
 });
 
 /**
- * ✅ General-purpose upload handler
+ *  General-purpose upload handler
  * Supports any custom field config: single or multiple
  * Example usage:
  *    uploadHandler([{ name: "image", maxCount: 1 }, { name: "gallery", maxCount: 5 }])

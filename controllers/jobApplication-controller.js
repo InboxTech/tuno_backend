@@ -75,7 +75,7 @@ const deleteSelectedApplications = async (req, res) => {
       return res.status(400).json({ message: "No Application IDs provided" });
     }
 
-    // ✅ Convert using `createFromHexString` (recommended for Mongoose v8+)
+    //  Convert using `createFromHexString` (recommended for Mongoose v8+)
 const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
 
 const objectIds = ids

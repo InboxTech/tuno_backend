@@ -116,14 +116,14 @@ const changePassword = async (req, res) => {
 
 // forget password
 const forgotPassword = async (req, res) => {
-  const { email } = req.body;
+  const { email, type } = req.body;
 
   try {
     const user = await User.findOne({ email });
+
     if (!user) {
-      return res
-        .status(404)
-        .json({ message: "No user found with this email." });
+      console.log("❌ No user found with email:", email);
+      return res.status(404).json({ message: "No user found with this email." });
     }
 
     const token = crypto.randomBytes(32).toString("hex");
@@ -133,33 +133,35 @@ const forgotPassword = async (req, res) => {
     user.resetPasswordExpires = expires;
     await user.save();
 
-    const resetUrl = `${process.env.CLIENT_URL}/reset-password/${token}`;
+    //  Select client URL
+    const baseUrl =
+      type === "admin" || user.isAdmin
+        ? process.env.ADMIN_CLIENT_URL
+        : process.env.USER_CLIENT_URL;
+
+    const resetUrl = `${baseUrl}/reset-password/${token}`;
+    console.log("📩 Sending reset link to:", user.email);
     console.log("🔗 Reset URL:", resetUrl);
 
     await sendEmail({
       to: user.email,
       subject: "Reset Your Password",
       html: `
-      <div style="border:1px solid #581c87; border-radius: 5px; padding:18px">
-        <h2 styele="color: #581c87;">Password Reset</h2>
-         <p>Secure your account with a new password</p>
-        <p>  We received a request to reset your password. If you made this request, click the button below to create a new password. This link will expire in 24 hours for security reasons.</p>
-        <a style="text-decoration: none;
-    background-color: #581c87;
-    color: #fff;
-    font-size: 13px;
-    padding: 5px;
-    border-radius: 5px;" href="${resetUrl}" target="_blank"> Reset My Password</a>
+        <div style="padding: 16px; border: 1px solid #ccc;">
+          <h2>Password Reset</h2>
+          <p>Click below to reset your password:</p>
+          <a href="${resetUrl}" target="_blank" style="color: #fff; background: #581c87; padding: 8px 12px; border-radius: 4px; text-decoration: none;">Reset Password</a>
         </div>
       `,
     });
 
     res.status(200).json({ message: "Reset link sent successfully." });
   } catch (error) {
-    console.error(" Forgot password error:", error.message);
+    console.error("❌ Forgot password error:", error.message);
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 
 // reset passwored
 const resetPassword = async (req, res) => {
