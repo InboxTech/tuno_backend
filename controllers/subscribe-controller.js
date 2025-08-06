@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
 const subscribe = require("../models/subscribe-model");
 
-
-// submit form 
+// submit form
 const subscribeForm = async (req, res) => {
   try {
     const { email } = req.body;
@@ -29,7 +28,7 @@ const subscribeForm = async (req, res) => {
 const getAllsubscribe = async (req, res) => {
   try {
     const subscribeUser = await subscribe
-      .find({ deleted: { $ne: true } }) 
+      .find({ deleted: { $ne: true } })
       .sort({ createdAt: -1 });
 
     if (!subscribeUser || subscribeUser.length === 0) {
@@ -42,7 +41,6 @@ const getAllsubscribe = async (req, res) => {
     return res.status(500).json({ msg: "Failed to fetch subscribes" });
   }
 };
-
 
 //  Soft delete (single)
 const softDeleteSubscribe = async (req, res) => {
@@ -80,7 +78,7 @@ const softDeleteSelectedSubscribes = async (req, res) => {
       });
     }
 
-    const validIds = ids.filter(id => mongoose.Types.ObjectId.isValid(id));
+    const validIds = ids.filter((id) => mongoose.Types.ObjectId.isValid(id));
     if (validIds.length === 0) {
       return res.status(400).json({
         success: false,
@@ -106,6 +104,9 @@ const softDeleteSelectedSubscribes = async (req, res) => {
   }
 };
 
-
-
-module.exports = { subscribeForm, getAllsubscribe,softDeleteSubscribe,softDeleteSelectedSubscribes };
+module.exports = {
+  subscribeForm,
+  getAllsubscribe,
+  softDeleteSubscribe,
+  softDeleteSelectedSubscribes,
+};

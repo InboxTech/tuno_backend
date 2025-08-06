@@ -4,8 +4,8 @@ const Project = require("../models/project-model");
 
 const createProject = async (req, res) => {
   try {
-    console.log("req.body:", req.body);
-    console.log("req.files:", req.files);
+    // console.log("req.body:", req.body);
+    // console.log("req.files:", req.files);
 
     const { title, shortDescription, fullDescription, status } = req.body;
 
