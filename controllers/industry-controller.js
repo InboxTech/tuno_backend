@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const addIndustry = async(req,res) => {
     try {
          console.log("REQ.BODY:", req.body);
-    console.log("REQ.FILES:", req.files); // ✅ Never use string concatenation here
+    console.log("REQ.FILES:", req.files); //  Never use string concatenation here
 
     const { title, short_description, full_description, image_alt_text, status } = req.body;
 
@@ -149,7 +149,7 @@ const deleteSelectedIndustries = async (req, res) => {
       return res.status(400).json({ message: "No industry IDs provided" });
     }
 
-    // ✅ Convert using `createFromHexString` (recommended for Mongoose v8+)
+    //  Convert using `createFromHexString` (recommended for Mongoose v8+)
 const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
 
 const objectIds = ids

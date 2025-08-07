@@ -1,6 +1,6 @@
 const express = require("express");
 const {addServices,getServices,updateServices,deleteServices,getServiceById,deleteSelectedServices,getServicesAdmin} = require("../controllers/service-controller");
-const { uploadHandler } = require("../middlewares/upload-middleware"); // ✅ Correct import
+const { uploadHandler } = require("../middlewares/upload-middleware"); //  Correct import
 const adminMiddleware = require("../middlewares/admin-middleware");
 const authMiddleware = require("../middlewares/auth-middleware");
 

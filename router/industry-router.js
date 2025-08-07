@@ -1,7 +1,7 @@
 const express = require('express');
 const authMiddleware = require('../middlewares/auth-middleware');
 const adminMiddleware = require('../middlewares/admin-middleware');
-const { uploadHandler } = require("../middlewares/upload-middleware"); // ✅ Correct import
+const { uploadHandler } = require("../middlewares/upload-middleware"); //  Correct import
 const {addIndustry,getIndustries,getIndustriesActive,getIndustryById,deleteIndustry,deleteSelectedIndustries,updateIndustries} = require('../controllers/industry-controller');
 const router = express.Router();
 

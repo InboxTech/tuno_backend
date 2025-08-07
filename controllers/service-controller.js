@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const addServices = async (req, res) => {
   try {
     console.log("REQ.BODY:", req.body);
-    console.log("REQ.FILES:", req.files); // ✅ Never use string concatenation here
+    console.log("REQ.FILES:", req.files); //  Never use string concatenation here
 
     const {
       title,

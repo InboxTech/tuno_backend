@@ -116,14 +116,14 @@ const changePassword = async (req, res) => {
 
 // forget password
 const forgotPassword = async (req, res) => {
-  const { email } = req.body;
+  const { email, type } = req.body;
 
   try {
     const user = await User.findOne({ email });
+
     if (!user) {
-      return res
-        .status(404)
-        .json({ message: "No user found with this email." });
+      console.log("❌ No user found with email:", email);
+      return res.status(404).json({ message: "No user found with this email." });
     }
 
     const token = crypto.randomBytes(32).toString("hex");
@@ -133,7 +133,14 @@ const forgotPassword = async (req, res) => {
     user.resetPasswordExpires = expires;
     await user.save();
 
-    const resetUrl = `${process.env.CLIENT_URL}/reset-password/${token}`;
+    //  Select client URL
+    const baseUrl =
+      type === "admin" || user.isAdmin
+        ? process.env.ADMIN_CLIENT_URL
+        : process.env.USER_CLIENT_URL;
+
+    const resetUrl = `${baseUrl}/reset-password/${token}`;
+    console.log("📩 Sending reset link to:", user.email);
     console.log("🔗 Reset URL:", resetUrl);
 
     await sendEmail({
@@ -157,10 +164,11 @@ const forgotPassword = async (req, res) => {
 
     res.status(200).json({ message: "Reset link sent successfully." });
   } catch (error) {
-    console.error(" Forgot password error:", error.message);
+    console.error("❌ Forgot password error:", error.message);
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 
 // reset passwored
 const resetPassword = async (req, res) => {

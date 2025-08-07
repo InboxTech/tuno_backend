@@ -18,7 +18,7 @@ const contactForm = async (req, res) => {
     }
 
     const saved = await Contact.create(contactData);
-    console.log("✅ Contact saved:", saved); // Confirm save
+    console.log(" Contact saved:", saved); // Confirm save
 
     return res.status(200).json({ message: "Contact saved successfully" });
   } catch (error) {
@@ -164,7 +164,7 @@ const sendContactEmail = async (req, res) => {
     };
 
     const info = await transporter.sendMail(mailOptions);
-    console.log("✅ Email sent:", info.response); // 👈 see what happens
+    console.log(" Email sent:", info.response); // 👈 see what happens
 
     res.status(200).json({ message: "Your message has been sent to the admin." });
   } catch (error) {
