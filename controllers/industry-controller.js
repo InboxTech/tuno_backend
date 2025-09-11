@@ -13,6 +13,10 @@ const addIndustry = async(req,res) => {
       ? `/uploads/industries/${req.files.industry_image[0].filename}`
       : null;
 
+       const thumbnail_image = req.files && req.files.thumbnail_image && req.files.thumbnail_image[0]
+      ? `/uploads/industries/${req.files.thumbnail_image[0].filename}`
+      : null;
+
     const industry = new Industry({
       title,
       short_description,
@@ -20,7 +24,7 @@ const addIndustry = async(req,res) => {
       image_alt_text,
       status,
       industry_image,
-      
+      thumbnail_image
     });
 
     await industry.save();
@@ -104,6 +108,11 @@ const updateIndustries = async (req, res) => {
 
   if( req.files && req.files.industry_image && req.files.industry_image[0]){
     updateData.industry_image = `/uploads/industries/${req.files.industry_image[0].filename}`;
+    console.log("Uploaded files:", req.files);
+  }
+
+    if( req.files && req.files.thumbnail_image && req.files.thumbnail_image[0]){
+    updateData.thumbnail_image = `/uploads/industries/${req.files.thumbnail_image[0].filename}`;
     console.log("Uploaded files:", req.files);
   }
 

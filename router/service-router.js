@@ -14,7 +14,7 @@ router
     adminMiddleware,
     uploadHandler([
       { name: "service_image", maxCount: 1 },
-      { name: "service_images", maxCount: 10 },
+      { name: "thumbnail_image", maxCount: 1 },
     ]),
     addServices
   );
@@ -32,7 +32,7 @@ router.route("/service/getServiceById/:id").get(getServiceById);
 router.route("/service/updateService/:id").put(
     authMiddleware,adminMiddleware,  uploadHandler([
       { name: "service_image", maxCount: 1 },
-      { name: "service_images", maxCount: 10 },
+      { name: "thumbnail_image", maxCount: 1 },
     ]),
         updateServices);
 router.route("/service/deleteService/:id").delete(authMiddleware,adminMiddleware,deleteServices);

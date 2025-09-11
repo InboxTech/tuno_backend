@@ -17,6 +17,13 @@ const createProject = async (req, res) => {
       ? `/uploads/projects/${singleImage.filename}`
       : null;
 
+     //for thumbnail image
+      const thumbImage = req.files?.["thumbnail_image"]?.[0];
+    // const multipleImages = req.files?.["projectImages"] || [];
+
+    const thumbnail_image = thumbImage
+      ? `/uploads/projects/${thumbImage.filename}`
+      : null;
     // const projectImages = multipleImages.map(
     //   (file) => `/uploads/projects/${file.filename}`
     // );
@@ -27,7 +34,8 @@ const createProject = async (req, res) => {
       !shortDescription ||
       !fullDescription ||
       !status ||
-      !projectImage
+      !projectImage||
+      !thumbnail_image
     ) {
       return res.status(400).json({
         success: false,
@@ -41,6 +49,7 @@ const createProject = async (req, res) => {
       fullDescription,
       status,
       projectImage,
+      thumbnail_image
       // projectImages,
     });
 
@@ -131,6 +140,9 @@ const updateProject = async (req, res) => {
       updateData.projectImage = `/uploads/projects/${req.files.projectImage[0].filename}`;
     }
 
+     if (req.files?.thumbnail_image?.[0]) {
+      updateData.thumbnail_image = `/uploads/projects/${req.files.thumbnail_image[0].filename}`;
+    }
     //  For multiple images
     // if (req.files?.projectImages?.length > 0) {
     //   updateData.projectImages = req.files.projectImages.map(

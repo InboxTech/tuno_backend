@@ -21,7 +21,10 @@ const projectSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-
+thumbnail_image: {
+  type: String,
+      required: true,
+},
     // projectImages: {
     //   type: [String],
     //   default: [],

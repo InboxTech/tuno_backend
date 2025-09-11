@@ -19,6 +19,10 @@ const serviceSchema = new Schema({
     type: String, // URL
     required: true
   },
+  thumbnail_image:{
+    type: String, // URL
+    required: true
+  },
   image_alt_text: {
     type: String,
     required: true
@@ -43,7 +47,9 @@ const serviceSchema = new Schema({
     type: Boolean,
     default: false,
   } 
-});
+},
+{ timestamps: true }
+);
 
 const Service = new model("Service", serviceSchema);
 

@@ -21,6 +21,11 @@ const addServices = async (req, res) => {
         ? `/uploads/services/${req.files.service_image[0].filename}`
         : null;
 
+         const thumbnail_image =
+      req.files && req.files.thumbnail_image && req.files.thumbnail_image[0]
+        ? `/uploads/services/${req.files.thumbnail_image[0].filename}`
+        : null;
+
     // const service_images = req.files && req.files.service_images
     //   ? req.files.service_images.map(file => `/uploads/serviceimage/${file.filename}`)
     //   : [];
@@ -32,6 +37,7 @@ const addServices = async (req, res) => {
       image_alt_text,
       status,
       service_image,
+      thumbnail_image
       // service_images,
     });
 
@@ -121,6 +127,11 @@ const updateServices = async (req, res) => {
 
     if (req.files && req.files.service_image && req.files.service_image[0]) {
       updateData.service_image = `/uploads/services/${req.files.service_image[0].filename}`;
+      console.log("Uploaded files:", req.files);
+    }
+
+     if (req.files && req.files.thumbnail_image && req.files.thumbnail_image[0]) {
+      updateData.thumbnail_image = `/uploads/services/${req.files.thumbnail_image[0].filename}`;
       console.log("Uploaded files:", req.files);
     }
 

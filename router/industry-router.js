@@ -6,7 +6,7 @@ const {addIndustry,getIndustries,getIndustriesActive,getIndustryById,deleteIndus
 const router = express.Router();
 
 //add industry
-router.route("/addIndustry").post(authMiddleware,adminMiddleware,uploadHandler([{ name: "industry_image", maxCount: 1 }]),addIndustry)
+router.route("/addIndustry").post(authMiddleware,adminMiddleware,uploadHandler([{ name: "industry_image", maxCount: 1 },{ name: "thumbnail_image", maxCount: 1 }]),addIndustry)
 
 
 //get indudtry admin side
@@ -25,6 +25,6 @@ router.route("/deleteIndustry/:id").delete(authMiddleware,adminMiddleware,delete
 router.route("/deleteSelectedIndustries").post(authMiddleware,adminMiddleware,deleteSelectedIndustries)
 
 //update industry
-router.route("/updateIndustry/:id").put(authMiddleware,adminMiddleware, uploadHandler([{ name: "industry_image", maxCount: 1 }]),updateIndustries)
+router.route("/updateIndustry/:id").put(authMiddleware,adminMiddleware, uploadHandler([{ name: "industry_image", maxCount: 1 },{ name: "thumbnail_image", maxCount: 1 }]),updateIndustries)
         
 module.exports = router;

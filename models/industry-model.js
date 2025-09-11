@@ -19,6 +19,10 @@ const industrySchema = new Schema({
     type: String, // URL
     required: true
   },
+  thumbnail_image: {
+    type: String, // URL
+    required: true
+  },
   image_alt_text: {
     type: String,
     required: true

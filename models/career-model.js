@@ -54,7 +54,9 @@ const careerschema = new Schema({
         type: Boolean,
         default: false,
     } 
-    })
+    },
+{ timestamps: true }
+)
 
 const Career = new model('Career', careerschema);
 module.exports = Career;

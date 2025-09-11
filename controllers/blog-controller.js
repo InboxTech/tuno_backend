@@ -90,6 +90,13 @@ const createBlog = async (req, res) => {
         ? `/uploads/blogs/${req.files.image[0].filename}`
         : null; // Ensure image is null if not provided
 
+
+         const thumbnail_image =
+      req.files && req.files.thumbnail_image && req.files.thumbnail_image[0]
+        ? `/uploads/blogs/${req.files.thumbnail_image[0].filename}`
+        : null; 
+
+
     // Although schema validation handles 'required', it's good to provide
     // a more specific message if the image is explicitly missing before DB call.
     if (!image) {
@@ -106,6 +113,7 @@ const createBlog = async (req, res) => {
       author,
       status,
       image, // Assign the determined image path
+      thumbnail_image
     });
 
     await blog.save();
@@ -160,6 +168,9 @@ const updateBlog = async (req, res) => {
       updateFields.image = `/uploads/blogs/${req.files.image[0].filename}`;
     }
 
+      if (req.files && req.files.thumbnail_image && req.files.thumbnail_image[0]) {
+      updateFields.thumbnail_image = `/uploads/blogs/${req.files.thumbnail_image[0].filename}`;
+    }
     const updateData = await Blog.findByIdAndUpdate(id, updateFields, {
       new: true,
       runValidators: true, // This will re-run validation, good.
