@@ -1,4 +1,5 @@
 const Team = require("../models/team-model");
+const mongoose = require("mongoose");
 
 //  Create a new team member
 const createTeamMember = async (req, res) => {
@@ -11,7 +12,7 @@ const createTeamMember = async (req, res) => {
       twitter,
       linkedIn,
       instagram,
-      description,
+      // description,
       status,
     } = req.body;
 
@@ -23,10 +24,10 @@ const createTeamMember = async (req, res) => {
 
     if (
       !title ||
-      !designation ||
+      // !designation ||
       !experience ||
       !linkedIn ||
-      !description ||
+      // !description ||
       !image
     ) {
       return res
@@ -42,7 +43,7 @@ const createTeamMember = async (req, res) => {
       twitter,
       linkedIn,
       instagram,
-      description,
+      // description,
       status,
       image,
     });
@@ -58,15 +59,15 @@ const createTeamMember = async (req, res) => {
   }
 };
 
-const handleDeleteTeam = async (id) => {
-  try {
-    await axios.delete(`/team/delete/${id}`);
-    toast.success("Team member deleted");
-    fetchTeamList();
-  } catch (error) {
-    toast.error("Delete failed");
-  }
-};
+// const handleDeleteTeam = async (id) => {
+//   try {
+//     await axios.delete(`/team/delete/${id}`);
+//     toast.success("Team member deleted");
+//     fetchTeamList();
+//   } catch (error) {
+//     toast.error("Delete failed");
+//   }
+// };
 //  Get all team members
 const getAllTeamMembers = async (req, res) => {
   try {

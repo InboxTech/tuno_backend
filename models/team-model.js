@@ -10,15 +10,15 @@ const teamSchema = new Schema(
     twitter: { type: String, trim: true },
     linkedIn: { type: String, required: true, trim: true },
     instagram: { type: String, trim: true },
-    description: { type: String, required: true, trim: true },
+    // description: { type: String, required: true, trim: true },
     deleted: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     status: {
       type: String,
       enum: ["Active", "Inactive", "Pending"],
-      default: "active",
+      default: "Active",
     },
   },
   { timestamps: true }

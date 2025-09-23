@@ -45,7 +45,7 @@ app.use("/api/form", contactRoute);
 // admin user router
 app.use("/api/admin",adminRouter);
 app.use("/api/data", blogRoute);
-app.use("/api/teamMeber",teamRouter);
+app.use("/api/teamMember",teamRouter);
 app.use("/api/testimonialData",testimonialRouter);
 app.use("/api/projectData",projectRouter);
 app.use("/api/subscribeData",subscribeRouter);
