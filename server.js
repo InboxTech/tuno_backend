@@ -19,6 +19,7 @@ const teamRouter = require ('./router/team-route')
 const testimonialRouter = require ('./router/testimonial-routes')
 const projectRouter = require ('./router/project-routes')
 const subscribeRouter = require('./router/subscribe-router')
+const workProcessRoutes = require ("./router/workProcessRoutes") ;
 const connectDB = require("./utils/db");
 const errorMiddleware = require("./middlewares/error-middleware");
 const path = require("path");
@@ -49,6 +50,7 @@ app.use("/api/teamMember",teamRouter);
 app.use("/api/testimonialData",testimonialRouter);
 app.use("/api/projectData",projectRouter);
 app.use("/api/subscribeData",subscribeRouter);
+app.use("/api/work-process", workProcessRoutes);
 
 //admin service router
 app.use("/api/admin", serviceRoute);
