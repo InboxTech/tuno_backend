@@ -19,6 +19,7 @@ const teamRouter = require ('./router/team-route')
 const testimonialRouter = require ('./router/testimonial-routes')
 const projectRouter = require ('./router/project-routes')
 const subscribeRouter = require('./router/subscribe-router')
+const bannerRouter = require('./router/banner-router')
 const connectDB = require("./utils/db");
 const errorMiddleware = require("./middlewares/error-middleware");
 const path = require("path");
@@ -51,7 +52,7 @@ app.use("/api/projectData",projectRouter);
 app.use("/api/subscribeData",subscribeRouter);
 
 //admin service router
-app.use("/api/admin", serviceRoute);
+app.use("/api/service", serviceRoute);
 
 app.use("/api/industry",industryeRoute);
 //job application router
@@ -59,6 +60,9 @@ app.use("/api/jobApplication", jobApplyRoute);
 
 // career router
 app.use("/api/career", careerRoute);
+
+//banner router
+app.use("/api/banner", bannerRouter);
 
 //  Error handler
 app.use(errorMiddleware);

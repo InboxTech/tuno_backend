@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
       folder = "uploads/teams";
     } else if (req.baseUrl.includes("testimonial")) {
       folder = "uploads/testimonials";
-    } else if (req.originalUrl.includes("service")) {
+    } else if (req.baseUrl.includes("service")) {
       folder = "uploads/services";
     } else if (req.originalUrl.includes("applyJobDetails")) {
       folder = "uploads/resumes";
@@ -21,6 +21,8 @@ const storage = multer.diskStorage({
       folder = "uploads/blogs";
     }else if (req.originalUrl.includes("industry")) {
       folder = "uploads/industries";
+    }else if (req.baseUrl.includes("banner")) {
+      folder = "uploads/banner";
     }
 
     fs.mkdirSync(folder, { recursive: true });
