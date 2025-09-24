@@ -14,7 +14,9 @@ const getWorkProcesses = async (req, res) => {
 const createWorkProcess = async (req, res) => {
   try {
     const { stepNumber, title, description } = req.body;
-    let image = req.file ? `/uploads/workprocess/${req.file.filename}` : null;
+    let image = req.files && req.files.image
+      ? `/uploads/work-process/${req.files.image[0].filename}`
+      : null;
 
     const newStep = new WorkProcess({ stepNumber, title, description, image });
     await newStep.save();
@@ -30,11 +32,19 @@ const updateWorkProcess = async (req, res) => {
   try {
     const { id } = req.params;
     const { stepNumber, title, description } = req.body;
-    let image = req.file ? `/uploads/workprocess/${req.file.filename}` : undefined;
+
+    let image = req.files && req.files.image
+      ? `/uploads/work-process/${req.files.image[0].filename}`
+      : undefined;
 
     const updatedStep = await WorkProcess.findByIdAndUpdate(
       id,
-      { stepNumber, title, description, ...(image && { image }) },
+      {
+        stepNumber,
+        title,
+        description,
+        ...(image && { image }),
+      },
       { new: true }
     );
 
@@ -43,6 +53,7 @@ const updateWorkProcess = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
 
 // DELETE step
 const deleteWorkProcess = async (req, res) => {

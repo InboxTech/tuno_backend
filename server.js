@@ -10,6 +10,7 @@ const industryeRoute = require("./router/industry-router");
 const jobApplyRoute = require("./router/jobApplication-router");
 const careerRoute = require("./router/career-router");
 const blogRoute = require("./router/blog-router");
+const aboutRoutes = require('./router/about-routes')
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
 
@@ -51,7 +52,7 @@ app.use("/api/testimonialData",testimonialRouter);
 app.use("/api/projectData",projectRouter);
 app.use("/api/subscribeData",subscribeRouter);
 app.use("/api/work-process", workProcessRoutes);
-
+app.use("/api/about", aboutRoutes);
 //admin service router
 app.use("/api/admin", serviceRoute);
 
