@@ -14,7 +14,7 @@ const authMiddleware = require("../middlewares/auth-middleware");
 const adminMiddleware = require("../middlewares/admin-middleware");
 
 //  Get all About entries (admin)
-router.route("/about").get(authMiddleware, adminMiddleware, getAllAbout);
+router.route("/about").get( getAllAbout);
 
 // Public/Frontend route
 router.get("/frontend/about", getFrontendAbout);

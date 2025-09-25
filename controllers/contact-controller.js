@@ -154,8 +154,8 @@ const sendContactEmail = async (req, res) => {
 
     // Multiple recipients here 👇
     const recipients = [
-      "punit.kshatriya@inbox-infotech.com", // Admin
-      "hr@inbox-infotech.com",    // HR
+      "darshit@inboxtechs.com", // Admin
+      "info@inbox-infotech.com",    // HR
 
     ];
 

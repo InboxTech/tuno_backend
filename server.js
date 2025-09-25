@@ -52,7 +52,7 @@ app.use("/api/testimonialData",testimonialRouter);
 app.use("/api/projectData",projectRouter);
 app.use("/api/subscribeData",subscribeRouter);
 app.use("/api/work-process", workProcessRoutes);
-app.use("/api/about", aboutRoutes);
+app.use("/api/about-data", aboutRoutes);
 //admin service router
 app.use("/api/admin", serviceRoute);
 
