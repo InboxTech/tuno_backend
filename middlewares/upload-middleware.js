@@ -19,12 +19,17 @@ const storage = multer.diskStorage({
       folder = "uploads/projects";
     } else if (req.originalUrl.includes("blog")) {
       folder = "uploads/blogs";
-    }else if (req.originalUrl.includes("industry")) {
+    } else if (req.originalUrl.includes("industry")) {
       folder = "uploads/industries";
     }else if (req.baseUrl.includes("banner")) {
       folder = "uploads/banner";
     }else if (req.baseUrl.includes("whychooseus")) {
       folder = "uploads/whychooseus";
+    } else if (req.baseUrl.includes("work-process")) {
+      folder = "uploads/work-process";
+    }
+    else if (req.originalUrl.includes("about")) {
+      folder = "uploads/about";
     }
     
 
@@ -52,7 +57,10 @@ const fileFilter = (req, file, cb) => {
     if (resumeTypes.includes(file.mimetype)) {
       cb(null, true);
     } else {
-      cb(new Error("Only PDF, DOC, or DOCX files are allowed for resumes!"), false);
+      cb(
+        new Error("Only PDF, DOC, or DOCX files are allowed for resumes!"),
+        false
+      );
     }
   } else {
     if (imageTypes.includes(file.mimetype)) {
