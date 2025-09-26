@@ -23,7 +23,10 @@ const storage = multer.diskStorage({
       folder = "uploads/industries";
     }else if (req.baseUrl.includes("banner")) {
       folder = "uploads/banner";
+    }else if (req.baseUrl.includes("whychooseus")) {
+      folder = "uploads/whychooseus";
     }
+    
 
     fs.mkdirSync(folder, { recursive: true });
     cb(null, folder);

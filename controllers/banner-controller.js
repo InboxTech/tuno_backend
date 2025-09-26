@@ -58,6 +58,26 @@ const getBannerFrontend = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+//get banner by id 
+const getBannerById = async (req, res) => {
+  try {
+    const bannerId = req.params.id;
+    const banner = await Service.findById(bannerId);
+    const banners = await Service.find({ isDeleted: false });
+
+    if (!banner) {
+      return res.status(404).json({ message: "Banner not found" });
+    }
+
+    return res.status(200).json(banner);
+  } catch (error) {
+    console.error("Error fetching banner by ID:", error);
+    return res.status(500).json({ msg: "Server error", error: error.message });
+  }
+};
+
+
 //delete banner data
 const deleteBanner = async (req, res,next) => {
   try {
@@ -74,6 +94,36 @@ const deleteBanner = async (req, res,next) => {
   }
 }
 
+//delete selected banners
+const deleteSelectedBanners = async (req, res) => {
+  try {
+    const { ids } = req.body;
+
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({ message: "No banner IDs provided" });
+    }
+
+    const objectIds = ids
+      .filter((id) => mongoose.Types.ObjectId.isValid(id))
+      .map((id) => new mongoose.Types.ObjectId(id));
+
+    const result = await Banner.updateMany(
+      { _id: { $in: objectIds } },
+      { $set: { isDeleted: { type: Boolean, default: false } } }
+    );
+
+    return res.status(200).json({
+      message: `${result.modifiedCount} banner(s) deleted successfully`,
+    });
+  } catch (error) {
+    console.error("Error deleting selected banners:", error);
+    return res.status(500).json({
+      message: "Server error",
+      error: error.message,
+    });
+  }
+};
+
 //update banner data
 const updateBanner = async (req, res) => {
   try {
@@ -81,7 +131,7 @@ const updateBanner = async (req, res) => {
     const updateData = req.body;
 
     if (req.files && req.files.image && req.files.image[0]) {
-      updateData.service_image = `/uploads/banner/${req.files.image[0].filename}`;
+      updateData.image = `/uploads/banner/${req.files.image[0].filename}`;
       console.log("Uploaded files:", req.files);
     }
 
@@ -105,5 +155,5 @@ const updateBanner = async (req, res) => {
 }
 
 
-module.exports = {addBanner,getBanner,deleteBanner,updateBanner,getBannerFrontend};
+module.exports = {addBanner,getBanner,deleteBanner,updateBanner,getBannerFrontend,getBannerById,deleteSelectedBanners};
 

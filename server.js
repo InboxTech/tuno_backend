@@ -20,6 +20,7 @@ const testimonialRouter = require ('./router/testimonial-routes')
 const projectRouter = require ('./router/project-routes')
 const subscribeRouter = require('./router/subscribe-router')
 const bannerRouter = require('./router/banner-router')
+const whyChooseUsRouter = require('./router/whychooseus-router')
 const connectDB = require("./utils/db");
 const errorMiddleware = require("./middlewares/error-middleware");
 const path = require("path");
@@ -64,6 +65,8 @@ app.use("/api/career", careerRoute);
 //banner router
 app.use("/api/banner", bannerRouter);
 
+//whychooseus router
+app.use("/api/whychooseus", whyChooseUsRouter);
 //  Error handler
 app.use(errorMiddleware);
 
