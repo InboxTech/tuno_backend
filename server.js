@@ -15,7 +15,7 @@ const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
 
 const adminRouter = require('./router/admin-router')
-
+const linkedinRoutes = require("./router/linkedinRoutes");
 const teamRouter = require ('./router/team-route')
 const testimonialRouter = require ('./router/testimonial-routes')
 const projectRouter = require ('./router/project-routes')
@@ -57,7 +57,7 @@ app.use("/api/work-process", workProcessRoutes);
 app.use("/api/about-data", aboutRoutes);
 //admin service router
 app.use("/api/service", serviceRoute);
-
+app.use("/api", linkedinRoutes);
 app.use("/api/industry",industryeRoute);
 //job application router
 app.use("/api/jobApplication", jobApplyRoute);

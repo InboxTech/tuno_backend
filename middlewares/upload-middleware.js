@@ -31,6 +31,9 @@ const storage = multer.diskStorage({
     else if (req.originalUrl.includes("about")) {
       folder = "uploads/about";
     }
+     else if (req.originalUrl.includes("linkedin")) {
+      folder = "uploads/linkedin";
+    }
     
 
     fs.mkdirSync(folder, { recursive: true });
